@@ -104,4 +104,4 @@ _G.GunSettings = { -- ปืนที่จะทำ
 (getgenv()).key = "MARUKYHZRRK64FBCLS26WT3GSO";
 (getgenv()).id = "987237048689782784";
 getgenv().Script_Mode = "Kaitun_Script"
-loadstring(game:HttpGet("https://raw.githubusercontent.com/xshiba/MasterPClient/main/Private.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xshiba/MaruComkak/main/PCBit.lua"))()
