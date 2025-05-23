@@ -24,9 +24,9 @@ end
 
 local GodHuman = tonumber(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyGodhuman", true))
 if GodHuman == 1 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/bodeocoten/bloxkid/blob/maru"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/bodeocoten/bloxkid/main/maru"))()
 else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/bodeocoten/bloxkid/blob/banana"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/bodeocoten/bloxkid/main/banana"))()
     task.spawn(function()
         while true do
             task.wait(300)
