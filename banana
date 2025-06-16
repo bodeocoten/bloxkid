@@ -26,10 +26,10 @@ getgenv().Key = "8cc66a2f45663b82b73a96cc"
             ["Godhuman"] =  true,
             ["Skull Guitar"] = true,
             ["Mirror Fractal"] = true,
-            ["Cursed Dual Katana"] = false,
+            ["Cursed Dual Katana"] = true,
             ["Upgrade Race V2-V3"] = true,
             ["Auto Pull Lever"] = true,
-            ["Shark Anchor"] = true, --- if have cdk,sg,godhuman
+            ["Shark Anchor"] = false, --- if have cdk,sg,godhuman
         },
         ["Get Rare Items"] = {
             ["Rengoku"] = false,
@@ -42,14 +42,14 @@ getgenv().Key = "8cc66a2f45663b82b73a96cc"
             ["Fragment"] = 50000,
         },
         ["Auto Chat"] = {
-            ["Enabled"] = false,
+            ["Enabled"] = true,
             ["Text"] = "shop acc kitsune yeti leopard - robloxgiare .co m",
         },
         ["Auto Summon Rip Indra"] = true, --- auto buy haki and craft haki legendary 
         ["Select Hop"] = { -- 70% will have it
-            ["Hop Server If Have Player Near"] = false, 
+            ["Hop Server If Have Player Near"] = true, 
             ["Hop Find Rip Indra Get Valkyrie Helm or Get Tushita"] = true, 
-            ["Hop Find Dough King Get Mirror Fractal"] = false,
+            ["Hop Find Dough King Get Mirror Fractal"] = true,
             ["Hop Find Raids Castle [CDK]"] = true,
             ["Hop Find Cake Queen [CDK]"] = true,
             ["Hop Find Soul Reaper [CDK]"] = true,
@@ -61,7 +61,7 @@ getgenv().Key = "8cc66a2f45663b82b73a96cc"
             ["Sword"] = false,
         },
         ["Buy Haki"] = {
-            ["Enhancement"] = false,
+            ["Enhancement"] = true,
             ["Skyjump"] = true,
             ["Flash Step"] = true,
             ["Observation"] = true,
