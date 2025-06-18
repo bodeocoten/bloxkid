@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
-getgenv().Key = "8cc66a2f45663b82b73a96cc"
+getgenv().Key = "37661ebfde6d6d62fd51ada4"
 getgenv().Config = {
     ["Buy Egg"] = {
         ["Select Egg"] = {
@@ -44,7 +44,7 @@ getgenv().Config = {
             }
         },
         ["Use Gear"] = {
-            ["Enabled"] = true, 
+            ["Enabled"] = false, 
             ["Select Gear"] = {
                 ["Basic Sprinkler"] = true, 
                 ["Advanced Sprinkler"] = true,
@@ -70,3 +70,110 @@ getgenv().Config = {
     }
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/obiiyeuem/vthangsitink/refs/heads/main/KaitunGAG.lua"))()
+
+local cachedPlayerData = nil
+
+spawn(function()
+    if getgenv().Config["Hop Server"] and getgenv().Config["Hop Server"].Enabled then
+        local hopMinutes = getgenv().Config["Hop Server"].Minutes or 10
+        while true do
+            if getgenv().UpdateAction then getgenv().UpdateAction("Hopping server in " .. hopMinutes .. " minutes") end
+            wait(hopMinutes * 60)
+            local ts = game:GetService("TeleportService")
+            local placeId = game.PlaceId
+            if getgenv().UpdateAction then getgenv().UpdateAction("Teleporting to new server...") end
+            ts:Teleport(placeId)
+        end
+    end
+end)
+
+spawn(function()
+    wait(5)
+    local honeyCfg = getgenv().Config["Buy Honey Shop"]
+    local function BuyHoneyItem(itemName)
+        local remote = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes"):FindFirstChild("BuyHoneyShopItem")
+        if remote then
+            remote:FireServer(itemName)
+        end
+    end
+
+    local function buyEventShopItems()
+        local data = cachedPlayerData
+        if not data or not data.EventShopStock or not data.EventShopStock.Stocks then return end
+
+        local allHoneyShopItems = {
+            "Flower Seed Pack",
+            "Hive Fruit Seed",
+            "Bee Crate",
+            "Nectarine Seed",
+            "Bee Egg"
+        }
+
+        local remote = game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):FindFirstChild("BuyEventShopStock")
+
+        for _, itemName in ipairs(allHoneyShopItems) do
+            local stockData = data.EventShopStock.Stocks[itemName]
+            if stockData and stockData.Stock > 0 then
+                remote:FireServer(itemName)
+                task.wait()
+            end
+        end
+    end
+
+    while task.wait(1) do
+        buyEventShopItems()
+    end
+end)
+
+task.spawn(function()
+    repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
+    if getgenv().Config["Enable Screen Black"] == false then
+        task.delay(6, function()
+            pcall(function()
+                setfpscap(30)
+
+                for _, v in ipairs(game:GetDescendants()) do
+                    if v:IsA("LocalScript") and v.Name:lower():find("blackscreen") then
+                        v:Destroy()
+                    elseif v:IsA("Frame") and v.BackgroundColor3 == Color3.new(0, 0, 0) and v.AbsoluteSize.X > 300 and v.AbsoluteSize.Y > 200 then
+                        v:Destroy()
+                    elseif v:IsA("ImageLabel") and v.ImageColor3 == Color3.new(0, 0, 0) then
+                        v:Destroy()
+                    end
+                end
+
+                for _, gui in ipairs(game.Players.LocalPlayer:WaitForChild("PlayerGui"):GetChildren()) do
+                    if gui:IsA("ScreenGui") and gui.Name:lower():find("black") then
+                        gui:Destroy()
+                    end
+                end
+            end)
+        end)
+    end
+end)
+
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+
+if getgenv().Config["Auto Rejoin"]["Enabled"] then
+    local function TryRejoin()
+        local delayTime = getgenv().Config["Auto Rejoin"]["Delay"] or 5
+        task.wait(delayTime)
+        TeleportService:Teleport(game.PlaceId, Players.LocalPlayer)
+    end
+
+    Players.LocalPlayer.OnTeleport:Connect(function(State)
+        if State == Enum.TeleportState.Failed or State == Enum.TeleportState.RequestRejected then
+            TryRejoin()
+        end
+    end)
+
+    game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(child)
+        if child.Name == "ErrorPrompt" then
+            local msg = child:FindFirstChild("MessageArea") and child.MessageArea:FindFirstChild("ErrorFrame") and child.MessageArea.ErrorFrame:FindFirstChild("ErrorMessage")
+            if msg and msg.Text then
+                TryRejoin()
+            end
+        end
+    end)
+end
