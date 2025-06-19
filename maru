@@ -1,179 +1,106 @@
-repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
-getgenv().Key = "37661ebfde6d6d62fd51ada4"
-getgenv().Config = {
-    ["Buy Egg"] = {
-        ["Select Egg"] = {
-            ["Bee Egg"] = true,
-            ["Bug Egg"] = true,
-            ["Mythical Egg"] = true,
-            ["Legendary Egg"] = true,
-        }
-    },
-    ["Delete Pet"] = {
-        ["Enabled"] = false,
-        ["Pet Dont Delete"] = {""}
-    },
-    ["dont Buy Seed low Price"] = {
-        ["Enabled"] = true, 
-        ["Money"] = 10000000,
-    },
-    ["Auto Delete Seed Planted"] = {
-        ["Enabled"] = false,
-        ["Auto Delete Seed Low Price"] = true,
-        ["Slot"] = 500,
-        ["Name Seed Delete"] = {
-            "",
-        }
-    },
-    ["Dont collect during weather events"] = {
-        ["Enabled"] = false,
-        ["Weather"] = {
-            ["Rain"] = false,
-            ["Frost"] = false,
-            ["Thunderstorm"] = false,
-        }
-    },
-    ["Gear"]  = {
-        ["Buy Gear"] = {
-            ["Enabled"] = true,
-            ["Select Gear"] = {
-                ["Basic Sprinkler"] = true, 
-                ["Advanced Sprinkler"] = true,
-                ["Godly Sprinkler"] = true,
-                ["Master Sprinkler"] = true,
-            }
-        },
-        ["Use Gear"] = {
-            ["Enabled"] = false, 
-            ["Select Gear"] = {
-                ["Basic Sprinkler"] = true, 
-                ["Advanced Sprinkler"] = true,
-                ["Godly Sprinkler"] = true,
-                ["Master Sprinkler"] = true,
-            },
-            ["Stack Gear"] = { -- 🇺🇸 It will wait until you have all the gears you've enabled in the stack before using them.For example, 
-                ["Enabled"] = false, --if you enable both Basic Sprinkler and Advanced Sprinkler, it will only start using them once both are in your inventory.
-                ["Select Gear"] = { 
-                    ["Basic Sprinkler"] = false, 
-                    ["Advanced Sprinkler"] = false,
-                    ["Godly Sprinkler"] = false,
-                    ["Master Sprinkler"] = false,
-                }
-            }
-        }
-    },
-    ["Webhook"] = {
-        ["Enabled"] = false,
-        ["Url"] = "",
-        ["Webhook Profile"] = true,
-        ["Webhook Collect Egg"] = true,
+repeat task.wait() until game:IsLoaded()
+repeat task.wait() until game.Players
+repeat task.wait() until game.Players.LocalPlayer
+repeat task.wait() until game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+wait(10)
+_G.Team = "Pirate" -- Marine / Pirate
+getgenv().Script_Mode = "Kaitun_Script"
+_G.MainSettings = {
+    ["EnabledHOP"] = true,
+    ['FPSBOOST'] = true,
+    ["FPSLOCKAMOUNT"] = 10,
+    ['WhiteScreen'] = true,
+    ['CloseUI'] = false,
+    ["NotifycationExPRemove"] = true,
+    ['AFKCheck'] = 3600,
+    ["LockFragments"] = 50000,
+    ["LockFruitsRaid"] = {
+        [1] = "Dough-Dough",
+        [2] = "Dragon-Dragon",
+        [3] = "Kisune-Kisune",
+        [4] = "Leopard-Leopard",
+        [5] = "Gas-Gas",
     }
 }
-loadstring(game:HttpGet("https://raw.githubusercontent.com/obiiyeuem/vthangsitink/refs/heads/main/KaitunGAG.lua"))()
-
-local cachedPlayerData = nil
-
-spawn(function()
-    if getgenv().Config["Hop Server"] and getgenv().Config["Hop Server"].Enabled then
-        local hopMinutes = getgenv().Config["Hop Server"].Minutes or 10
-        while true do
-            if getgenv().UpdateAction then getgenv().UpdateAction("Hopping server in " .. hopMinutes .. " minutes") end
-            wait(hopMinutes * 60)
-            local ts = game:GetService("TeleportService")
-            local placeId = game.PlaceId
-            if getgenv().UpdateAction then getgenv().UpdateAction("Teleporting to new server...") end
-            ts:Teleport(placeId)
-        end
-    end
-end)
-
-spawn(function()
-    wait(5)
-    local honeyCfg = getgenv().Config["Buy Honey Shop"]
-    local function BuyHoneyItem(itemName)
-        local remote = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes"):FindFirstChild("BuyHoneyShopItem")
-        if remote then
-            remote:FireServer(itemName)
-        end
-    end
-
-    local function buyEventShopItems()
-        local data = cachedPlayerData
-        if not data or not data.EventShopStock or not data.EventShopStock.Stocks then return end
-
-        local allHoneyShopItems = {
-            "Flower Seed Pack",
-            "Hive Fruit Seed",
-            "Bee Crate",
-            "Nectarine Seed",
-            "Bee Egg"
+_G.SharkAnchor_Settings = {
+    ["Enabled_Farm"] = false,
+    ['FarmAfterMoney'] = 2500000
+}
+_G.Quests_Settings = {        
+    ['Rainbow_Haki'] = true,
+    ["MusketeerHat"] = true,
+    ["PullLever"] = true,
+    ['DoughQuests_Mirror'] = {
+        ['Enabled'] = true,
+        ['UseFruits'] = true
+    }        
+}
+_G.Races_Settings = {
+    ['Race'] = {
+        ['EnabledEvo'] = true,
+        ["v2"] = true,
+        ["v3"] = true,
+        ["Races_Lock"] = {
+            ["Races"] = {
+                ["Mink"] = true,
+                ["Human"] = false,
+                ["Fishman"] = true
+            },
+            ["RerollsWhenFragments"] = 20000
         }
-
-        local remote = game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):FindFirstChild("BuyEventShopStock")
-
-        for _, itemName in ipairs(allHoneyShopItems) do
-            local stockData = data.EventShopStock.Stocks[itemName]
-            if stockData and stockData.Stock > 0 then
-                remote:FireServer(itemName)
-                task.wait()
-            end
-        end
-    end
-
-    while task.wait(1) do
-        buyEventShopItems()
-    end
-end)
-
-task.spawn(function()
-    repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
-    if getgenv().Config["Enable Screen Black"] == false then
-        task.delay(6, function()
-            pcall(function()
-                setfpscap(30)
-
-                for _, v in ipairs(game:GetDescendants()) do
-                    if v:IsA("LocalScript") and v.Name:lower():find("blackscreen") then
-                        v:Destroy()
-                    elseif v:IsA("Frame") and v.BackgroundColor3 == Color3.new(0, 0, 0) and v.AbsoluteSize.X > 300 and v.AbsoluteSize.Y > 200 then
-                        v:Destroy()
-                    elseif v:IsA("ImageLabel") and v.ImageColor3 == Color3.new(0, 0, 0) then
-                        v:Destroy()
-                    end
-                end
-
-                for _, gui in ipairs(game.Players.LocalPlayer:WaitForChild("PlayerGui"):GetChildren()) do
-                    if gui:IsA("ScreenGui") and gui.Name:lower():find("black") then
-                        gui:Destroy()
-                    end
-                end
-            end)
-        end)
-    end
-end)
-
-local Players = game:GetService("Players")
-local TeleportService = game:GetService("TeleportService")
-
-if getgenv().Config["Auto Rejoin"]["Enabled"] then
-    local function TryRejoin()
-        local delayTime = getgenv().Config["Auto Rejoin"]["Delay"] or 5
-        task.wait(delayTime)
-        TeleportService:Teleport(game.PlaceId, Players.LocalPlayer)
-    end
-
-    Players.LocalPlayer.OnTeleport:Connect(function(State)
-        if State == Enum.TeleportState.Failed or State == Enum.TeleportState.RequestRejected then
-            TryRejoin()
-        end
-    end)
-
-    game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(child)
-        if child.Name == "ErrorPrompt" then
-            local msg = child:FindFirstChild("MessageArea") and child.MessageArea:FindFirstChild("ErrorFrame") and child.MessageArea.ErrorFrame:FindFirstChild("ErrorMessage")
-            if msg and msg.Text then
-                TryRejoin()
-            end
-        end
-    end)
-end
+    }
+}
+_G.Fruits_Settings = {
+    ['Main_Fruits'] = {"Dragon-Dragon"}, -- ผลหลัก ถ้ายังไม่ใช่ค่าที่ตั้งมันจะกินจนกว่าจะใช่หรือซื้อ
+    ['Select_Fruits'] = {"Dark-Dark", "Dragon-Dragon", "Quake-Quake", "Light-Light", "Leopard-Leopard", "Buddha-Buddha","Kitsune-Kitsune","Dough-Dough","Dragon-Dragon","Gas-Gas"} -- กินหรือซื้อตอนไม่มีผล
+}
+_G.Settings_Melee = {
+    ['Superhuman'] = true,
+    ['DeathStep'] = true,
+    ['SharkmanKarate'] = true,
+    ['ElectricClaw'] = true,
+    ['DragonTalon'] = true,
+    ['Godhuman'] = true
+}
+_G.SwordSettings = {
+    ['Saber'] = true,
+    ["Pole"] = true,
+    ['MidnightBlade'] = true,
+    ['Shisui'] = true,
+    ['Saddi'] = true,
+    ['Wando'] = true,
+    ['Yama'] = true,
+    ['Rengoku'] = true,
+    ['Canvander'] = true,
+    ['BuddySword'] = true,
+    ['TwinHooks'] = true,
+    ['HallowScryte'] = true,
+    ['TrueTripleKatana'] = true,
+    ['CursedDualKatana'] = true
+}
+_G.GunSettings = {
+    ['Kabucha'] = true,
+    ['SerpentBow'] = true,
+    ['SoulGuitar'] = true
+}
+_G.FarmMastery_Settings = {
+    ['Melee'] = false,
+    ['Sword'] = false,
+    ['DevilFruits'] = false,
+    ['Select_Swords'] = {
+        ["AutoSettings"] = false,
+        ["ManualSettings"] = {
+            "Saber",
+            "Buddy Sword"
+        }
+    }
+}
+_G.Hop_Settings = {
+    ["Find Tushita"] = true
+}
+-- Script Here !!!
+-- Discord : RaMaFia
+getgenv().Key = "MARU-5JRJ5-A4IHH-DSN2-ERQKW-6KTP"
+getgenv().id = "987237048689782784"
+getgenv().Script_Mode = "Kaitun_Script"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xshiba/MaruBitkub/main/Mobile.lua"))()
