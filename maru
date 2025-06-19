@@ -42,8 +42,8 @@ _G.Races_Settings = {
         ["v3"] = true,
         ["Races_Lock"] = {
             ["Races"] = {
-                ["Mink"] = false,
-                ["Human"] = false,
+                ["Mink"] = true,
+                ["Human"] = true,
                 ["Fishman"] = true
             },
             ["RerollsWhenFragments"] = 20000
@@ -96,7 +96,7 @@ _G.FarmMastery_Settings = {
     }
 }
 _G.Hop_Settings = {
-    ["Find Tushita"] = true
+    ["Find Tushita"] = false
 }
 -- Script Here !!!
 -- Discord : RaMaFia
