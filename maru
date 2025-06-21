@@ -18,11 +18,11 @@ getgenv().Configs = {
         ["Hop Find Mirror Fractal"] = true,
         ["Hop Find Darkbeard"] = true, -- For skull guitar
         ["Hop Find Soul Reaper"] = true, -- For CDK
-        ["Hop Find Mirage"] = false, -- For pull lever
-        ["Find Fruit"] = false, -- Will find 1m+ fruit to unlock swan door to access third sea
+        ["Hop Find Mirage"] = true, -- For pull lever
+        ["Find Fruit"] = true, -- Will find 1m+ fruit to unlock swan door to access third sea
     },
     ["Farm Mastery"] = {
-        ["Enable"] = true,
+        ["Enable"] = false,
         ["Farm Mastery Weapons"] = {"Sword", "Gun", "Blox Fruit"}, -- Blox Fruit, Gun (left -> right: High -> Low Priority)
         ["Swords To Farm"] = {"Cursed Dual Katana"},
         ["Guns To Farm"] = {"Skull Guitar"},
@@ -48,8 +48,8 @@ getgenv().Configs = {
     ["Skull Guitar"] = true,
     ["Cursed Dual Katana"] = true,
     ["Switch Melee"] = true,
-    ["Eat Fruit"] = "Dough Fruit", -- leave blank for none, put the fruit name like this example: Smoke Fruit, T-Rex Fruit, ...
-    ["Snipe Fruit"] = "Magma Fruit", -- leave blank for none, put the fruit name like this example: Smoke Fruit, T-Rex Fruit, ...
+    ["Eat Fruit"] = "", -- leave blank for none, put the fruit name like this example: Smoke Fruit, T-Rex Fruit, ...
+    ["Snipe Fruit"] = "", -- leave blank for none, put the fruit name like this example: Smoke Fruit, T-Rex Fruit, ...
     ["Lock Fragment"] = 30000,
     ["Buy Stuffs"] = true -- buso, geppo, soru, ken haki, ...
 }
